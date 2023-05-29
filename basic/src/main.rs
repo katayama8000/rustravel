@@ -1,26 +1,75 @@
 fn main() {
-    // 参照と借用
-    let s1 = String::from("hello");
-    let len = calculate_length(&s1);
-    println!("The length of '{}' is {}.", s1, len);
+    let mut s: String = String::from("hello world");
+    let mut s2: String = String::from("hello world");
+    let my_string: String = String::from("hello world");
+    let mmm: &str = "hello world";
+    let mmmString: String = String::from(mmm);
 
-    let mut s = String::from("hello");
-    change(&mut s);
-    println!("{}", s);
+    let word: usize = first_word(&s);
+    let word2: &str = first_word_2(&s2);
+    let word2: &str = first_word_3(&my_string[..]);
 
-    // 可変参照の制約
-    // 可変参照は、特定のスコープで特定のデータに対して一つしか存在できない
-    // 不変な参照をしている間は、可変な参照をすることはできない
-    let mut y = String::from("hello");
-    let r1 = &mut y;
-    // let r2 = &mut s; // NG
-    println!("{}", r1);
+    s.clear(); // error!
+
+    println!("the first word is: {}", word);
+    println!("the first word is: {}", word2);
+    // sample();
+
+    let a: [i32; 5] = [1, 2, 3, 4, 5];
+    let slice: &[i32] = &a[2..3];
+    println!("{}", a[1]);
+    println!("{}", slice[0]);
 }
 
-fn calculate_length(s: &String) -> usize {
+fn first_word(s: &String) -> usize {
+    let bytes: &[u8] = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return i;
+        }
+    }
+
     s.len()
 }
 
-fn change(some_string: &mut String) {
-    some_string.push_str(", world");
+fn first_word_2(s: &String) -> &str {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+
+    &s[..]
+}
+
+fn first_word_3(s: &str) -> &str {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+
+    &s[..]
+}
+
+fn sample() -> () {
+    let s = String::from("hello world");
+
+    let hello = &s[0..5];
+    let world = &s[6..11];
+    println!("{} {}", hello, world);
+
+    let s: String = String::from("hello");
+
+    let len: usize = s.len();
+
+    let slice1 = &s[0..len];
+    let slice2 = &s[..2];
+    // 比較
+    println!("{}", slice1 == slice2);
 }

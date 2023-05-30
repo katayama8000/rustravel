@@ -1,55 +1,47 @@
 #[derive(Debug)]
-struct Rectangle {
-    width: u32,
-    height: u32,
+enum IpAddrKind {
+    V4,
+    V6,
 }
 
-impl Rectangle {
-    fn area(&self) -> u32 {
-        self.width * self.height
-    }
+#[derive(Debug)]
+enum IpAddr {
+    V4(u8, u8, u8, u8),
+    V6(String),
+}
 
-    fn can_hold(&self, other: &Rectangle) -> bool {
-        self.width > other.width && self.height > other.height
-    }
+#[derive(Debug)]
+enum Message {
+    Quit,
+    Move { x: i32, y: i32 },
+    Write(String),
+    ChangeColor(i32, i32, i32),
+}
 
-    fn square(size: u32) -> Rectangle {
-        Rectangle {
-            width: size,
-            height: size,
-        }
+impl Message {
+    fn call(&self) {
+        // method body would be defined here
+        // メソッド本体はここに定義される
+        println!("{:?}", self);
     }
 }
 
 fn main() {
-    let rect1 = Rectangle {
-        width: 30,
-        height: 50,
-    };
+    let four: IpAddrKind = IpAddrKind::V4;
+    let six: IpAddrKind = IpAddrKind::V6;
+    route(four);
+    route(six);
 
-    println!(
-        "The area of the rectangle is {} square pixels.",
-        rect1.area()
-    );
+    let home = IpAddr::V4(127, 0, 0, 1);
+    println!("{:?}", home);
 
-    let rect1: Rectangle = Rectangle {
-        width: 30,
-        height: 50,
-    };
-    let rect2: Rectangle = Rectangle {
-        width: 10,
-        height: 40,
-    };
-    let rect3: Rectangle = Rectangle {
-        width: 60,
-        height: 45,
-    };
+    let loopback: IpAddr = IpAddr::V6(String::from("::1"));
+    println!("{:?}", loopback);
 
-    // rect1にrect2ははまり込む？
-    println!("Can rect1 hold rect2? {}", rect1.can_hold(&rect2));
-    println!("Can rect1 hold rect3? {}", rect1.can_hold(&rect3));
+    let m: Message = Message::Write(String::from("hello"));
+    m.call();
+}
 
-    // 関連関数
-    let sq: Rectangle = Rectangle::square(3);
-    println!("sq is {:#?}", sq);
+fn route(ip_type: IpAddrKind) {
+    println!("{:?}", ip_type);
 }

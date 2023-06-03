@@ -1,1 +1,2 @@
-https://doc.rust-jp.rs/book-ja/
+- https://doc.rust-jp.rs/book-ja/
+- https://www.youtube.com/watch?v=tw2WCjBTgRM&t=1688s

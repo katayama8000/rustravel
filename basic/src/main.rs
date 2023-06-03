@@ -37,6 +37,14 @@ fn add<T: std::ops::Add<Output = T>>(a: T, b: T) -> T {
     a + b
 }
 
+#[derive(Debug)]
+enum Message {
+    Quit,
+    Move { x: i32, y: i32 },
+    Write(String),
+    ChangeColor(i32, i32, i32),
+}
+
 fn main() {
     let penny: u32 = value_in_cents(Coin::Penny);
     println!("{}", penny);
@@ -52,4 +60,13 @@ fn main() {
     println!("{:?}", some_five);
     let val: i32 = add(1, 2);
     println!("{}", val);
+
+    let mut message: Message = Message::Quit;
+    println!("{:?}, ", message);
+    message = Message::Move { x: 1, y: 2 };
+    println!("{:?}, ", message);
+    message = Message::Write(String::from("hello"));
+    println!("{:?}, ", message);
+    message = Message::ChangeColor(1, 2, 3);
+    println!("{:?}", message);
 }

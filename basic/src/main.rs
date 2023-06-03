@@ -1,47 +1,55 @@
-#[derive(Debug)]
-enum IpAddrKind {
-    V4,
-    V6,
+#[derive(Debug)] // すぐに州を点検できるように
+enum UsState {
+    Alabama,
+    Alaska,
+    // ... などなど
+}
+enum Coin {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter(UsState),
 }
 
-#[derive(Debug)]
-enum IpAddr {
-    V4(u8, u8, u8, u8),
-    V6(String),
-}
-
-#[derive(Debug)]
-enum Message {
-    Quit,
-    Move { x: i32, y: i32 },
-    Write(String),
-    ChangeColor(i32, i32, i32),
-}
-
-impl Message {
-    fn call(&self) {
-        // method body would be defined here
-        // メソッド本体はここに定義される
-        println!("{:?}", self);
+fn value_in_cents(coin: Coin) -> u32 {
+    match coin {
+        Coin::Penny => {
+            println!("Lucky penny!");
+            1
+        }
+        Coin::Nickel => 5,
+        Coin::Dime => 10,
+        Coin::Quarter(state) => {
+            println!("State quarter from {:?}!", state);
+            25
+        }
     }
 }
 
-fn main() {
-    let four: IpAddrKind = IpAddrKind::V4;
-    let six: IpAddrKind = IpAddrKind::V6;
-    route(four);
-    route(six);
-
-    let home = IpAddr::V4(127, 0, 0, 1);
-    println!("{:?}", home);
-
-    let loopback: IpAddr = IpAddr::V6(String::from("::1"));
-    println!("{:?}", loopback);
-
-    let m: Message = Message::Write(String::from("hello"));
-    m.call();
+fn plus_one(x: Option<i32>) -> Option<i32> {
+    match x {
+        None => None,
+        Some(i) => Some(i + 1),
+    }
 }
 
-fn route(ip_type: IpAddrKind) {
-    println!("{:?}", ip_type);
+fn add<T: std::ops::Add<Output = T>>(a: T, b: T) -> T {
+    a + b
+}
+
+fn main() {
+    let penny: u32 = value_in_cents(Coin::Penny);
+    println!("{}", penny);
+    let nickel: u32 = value_in_cents(Coin::Nickel);
+    println!("{}", nickel);
+    let quarter: u32 = value_in_cents(Coin::Quarter(UsState::Alaska));
+    println!("{}", quarter);
+    let five: Option<i32> = Some(5);
+    let six: Option<i32> = plus_one(five);
+    let none: Option<i32> = plus_one(None);
+    println!("{:?}, {:?}, {:?}", five, six, none);
+    let some_five: Option<i32> = Some(5);
+    println!("{:?}", some_five);
+    let val: i32 = add(1, 2);
+    println!("{}", val);
 }

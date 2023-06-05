@@ -45,6 +45,12 @@ enum Message {
     ChangeColor(i32, i32, i32),
 }
 
+impl Message {
+    fn show(&self) {
+        println!("{:?}", self);
+    }
+}
+
 fn main() {
     let penny: u32 = value_in_cents(Coin::Penny);
     println!("{}", penny);
@@ -62,11 +68,36 @@ fn main() {
     println!("{}", val);
 
     let mut message: Message = Message::Quit;
-    println!("{:?}, ", message);
+    message.show();
     message = Message::Move { x: 1, y: 2 };
-    println!("{:?}, ", message);
+    message.show();
     message = Message::Write(String::from("hello"));
-    println!("{:?}, ", message);
+    message.show();
     message = Message::ChangeColor(1, 2, 3);
-    println!("{:?}", message);
+    message.show();
+
+    let mut maybe_number: Option<i32> = Some(1);
+    println!("{:?}", maybe_number);
+    maybe_number = None;
+    println!("{:?}", maybe_number);
+
+    // シャドーウィング
+
+    let x: i32 = 5;
+    let x: i32 = x + 1;
+
+    {
+        let x: i32 = x * 2;
+        println!("{}", x);
+    }
+
+    println!("{}", x);
+
+    // mut
+    // 再宣言なのでOK
+    let str: &str = "aaa";
+    let str: usize = str.len();
+    // 再代入なのでNG
+    let mut str2: &str = "aaa";
+    // str2 = str2.len();
 }

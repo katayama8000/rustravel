@@ -1,53 +1,38 @@
+use std::fs::File;
+use std::io::Read;
+use std::{io, str};
+
+pub struct Guess {
+    value: i32,
+}
+
+impl Guess {
+    pub fn new(value: i32) -> Guess {
+        if value < 1 || value > 100 {
+            panic!("Guess value must be between 1 and 100, got {}.", value);
+        }
+        Guess { value }
+    }
+
+    pub fn value(&self) -> i32 {
+        self.value
+    }
+}
+
 fn main() {
-    // 所有権
-    let s1: String = String::from("hello");
-    println!("{}", s1);
-    let s2: String = s1;
-    // println!("{}", s1); // error
-    let s3: String = s2.clone();
-    println!("{}", s3);
+    let f: File = File::open("hello.txt").unwrap();
+    println!("{:?}", f);
 
-    print_str_fn(s3);
-    // println!("{}", s3); // error
+    let f1: File = File::open("world.txt").expect("Failed to open world.txt");
+    println!("{:?}", f1);
 
-    let x1: i32 = 5;
-    print_num_fn(x1);
-    println!("{}", x1);
-
-    let s4: String = String::from("hello");
-    let s5: String = move_back_fn(s4);
-    println!("{}", s5);
-
-    let s6: String = String::from("hello");
-    borrow_str_fn(&s6);
-    println!("{}", s6);
-
-    let mut s7: String = String::from("hello");
-    borrow_mut_str_fn(&mut s7);
-    println!("{}", s7);
-
-    // 参照の規則
-    // 任意のタイミングで１つの可変参照か不変な参照幾つでものどちらかを行うことができる
-    // 参照は常に有効でなければならない
+    let s: String = read_username_from_file().unwrap();
+    println!("{:?}", s);
 }
 
-fn print_str_fn(s: String) {
-    println!("{}", s);
-}
-
-fn print_num_fn(x: i32) {
-    println!("{}", x);
-}
-
-fn move_back_fn(s: String) -> String {
-    s
-}
-
-fn borrow_str_fn(s: &String) {
-    println!("{}", s);
-}
-
-fn borrow_mut_str_fn(s: &mut String) {
-    s.push_str(" world");
-    println!("{}", s)
+fn read_username_from_file() -> Result<String, io::Error> {
+    let mut f: File = File::open("hello.txt")?;
+    let mut s: String = String::new();
+    f.read_to_string(&mut s)?;
+    Ok(s)
 }

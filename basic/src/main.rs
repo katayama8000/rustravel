@@ -1,38 +1,33 @@
-use std::fs::File;
-use std::io::Read;
-use std::{io, str};
+use ::std::cmp::PartialOrd;
 
-pub struct Guess {
-    value: i32,
-}
+fn largest_number<T: PartialOrd + Copy>(list: &[T]) -> T {
+    let mut largest: T = list[0];
 
-impl Guess {
-    pub fn new(value: i32) -> Guess {
-        if value < 1 || value > 100 {
-            panic!("Guess value must be between 1 and 100, got {}.", value);
+    for &number in list {
+        if number > largest {
+            largest = number;
         }
-        Guess { value }
     }
 
-    pub fn value(&self) -> i32 {
-        self.value
-    }
+    largest
 }
-
 fn main() {
-    let f: File = File::open("hello.txt").unwrap();
-    println!("{:?}", f);
+    let number_list: Vec<i32> = vec![34, 50, 25, 100, 65];
+    let mut largest: i32 = number_list[0];
 
-    let f1: File = File::open("world.txt").expect("Failed to open world.txt");
-    println!("{:?}", f1);
+    for number in number_list {
+        if number > largest {
+            largest = number;
+        }
+    }
 
-    let s: String = read_username_from_file().unwrap();
-    println!("{:?}", s);
-}
+    println!("The largest number is {}", largest);
 
-fn read_username_from_file() -> Result<String, io::Error> {
-    let mut f: File = File::open("hello.txt")?;
-    let mut s: String = String::new();
-    f.read_to_string(&mut s)?;
-    Ok(s)
+    let number_list: Vec<i32> = vec![34, 50, 25, 100, 65];
+    let result: i32 = largest_number(&number_list);
+    println!("The largest number is {}", result);
+
+    let number_list: Vec<f64> = vec![34.0, 50.0, 25.0, 100.1, 65.0];
+    let result: f64 = largest_number(&number_list);
+    println!("The largest number is {}", result);
 }

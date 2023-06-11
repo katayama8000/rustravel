@@ -1,33 +1,84 @@
-use ::std::cmp::PartialOrd;
+use std::fmt::Display;
 
-fn largest_number<T: PartialOrd + Copy>(list: &[T]) -> T {
-    let mut largest: T = list[0];
-
-    for &number in list {
-        if number > largest {
-            largest = number;
-        }
-    }
-
-    largest
+struct Pair<T> {
+    x: T,
+    y: T,
 }
-fn main() {
-    let number_list: Vec<i32> = vec![34, 50, 25, 100, 65];
-    let mut largest: i32 = number_list[0];
 
-    for number in number_list {
-        if number > largest {
-            largest = number;
+impl<T> Pair<T> {
+    fn new(x: T, y: T) -> Self {
+        Self { x, y }
+    }
+}
+
+impl<T: Display + PartialOrd> Pair<T> {
+    fn cmp_display(&self) {
+        if self.x >= self.y {
+            println!("The largest member is x = {}", self.x);
+        } else {
+            println!("The largest member is y = {}", self.y);
         }
     }
+}
 
-    println!("The largest number is {}", largest);
+pub trait Summary {
+    fn summarize_author(&self) -> String;
 
-    let number_list: Vec<i32> = vec![34, 50, 25, 100, 65];
-    let result: i32 = largest_number(&number_list);
-    println!("The largest number is {}", result);
+    fn summarize(&self) -> String {
+        format!("(Read more from {}...)", self.summarize_author())
+    }
+}
 
-    let number_list: Vec<f64> = vec![34.0, 50.0, 25.0, 100.1, 65.0];
-    let result: f64 = largest_number(&number_list);
-    println!("The largest number is {}", result);
+pub fn notify(item: impl Summary) {
+    println!("Breaking news! {}", item.summarize());
+}
+
+pub fn notify2<T: Summary>(item: T) {
+    println!("Breaking news! {}", item.summarize());
+}
+
+pub struct Tweet {
+    pub username: String,
+    pub content: String,
+    pub reply: bool,
+    pub retweet: bool,
+}
+
+impl Summary for Tweet {
+    fn summarize_author(&self) -> String {
+        format!("@{}", self.username)
+    }
+}
+
+fn some_function<T, U>(t: T, u: U) -> i32
+where
+    T: Summary + Clone,
+    U: Clone + Copy,
+{
+    1
+}
+
+fn main() {
+    let pair: Pair<i32> = Pair::new(1, 2);
+    pair.cmp_display();
+
+    let tweet: Tweet = Tweet {
+        username: String::from("horse_ebooks"),
+        content: String::from("of course, as you probably already know, people"),
+        reply: false,
+        retweet: false,
+    };
+
+    println!("1 new tweet: {}", tweet.summarize());
+
+    notify(tweet);
+
+    let tweet2: Tweet = Tweet {
+        username: String::from("horse_ebooks"),
+        content: String::from("of course, as you probably already know, people"),
+        reply: false,
+        retweet: false,
+    };
+
+    notify2(tweet2);
 }

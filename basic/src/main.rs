@@ -1,48 +1,48 @@
-struct Human {
-    name: String,
-    age: u32,
-    height: u32,
-    weight: u32,
-}
-
-impl Human {
-    fn new(name: String, age: u32, height: u32, weight: u32) -> Self {
-        Self {
-            name,
-            age,
-            height,
-            weight,
-        }
-    }
-
-    fn print(&self) {
-        println!(
-            "Name: {}, Age: {}, Height: {}, Weight: {}",
-            self.name, self.age, self.height, self.weight
-        );
-    }
-}
-
-struct Color(i32, i32, i32);
-
-impl Color {
-    fn print(&self) {
-        println!("R: {}, G: {}, B: {}", self.0, self.1, self.2);
-    }
-}
-
 fn main() {
-    let human: Human = Human::new(String::from("John"), 20, 170, 60);
-    human.print();
+    let s1: String = String::from("hello");
+    let s2: &str = "hello";
 
-    let tom: Human = Human {
-        name: String::from("Tom"),
-        age: 25,
-        ..human
-    };
+    let s3: String = s1.clone();
 
-    tom.print();
+    takes_ownership(s3);
+    let length1: usize = calculate_length(&s1);
+    println!("{}", length1);
+    println!("{}", s1);
 
-    let color: Color = Color(255, 255, 255);
-    color.print();
+    let rets1: &String = return_string2(&s1);
+    println!("{}", rets1);
+    println!("{}", s1);
+
+    let mut s4: String = String::from("hello");
+    change_text(&mut s4);
+    println!("{}", s4);
+}
+
+fn takes_ownership(some_string: String) {
+    println!("{}", some_string);
+}
+
+fn func() -> String {
+    let s: String = String::from("hello");
+    s
+}
+
+// pointerを引数に取る関数
+fn calculate_length(s: &String) -> usize {
+    s.len()
+}
+
+// 文字列を変更する関数
+fn return_string1(s: String) -> String {
+    s
+}
+
+// pointerを引数にとってそれをそのまま返す
+fn return_string2(s: &String) -> &String {
+    s
+}
+
+// 可変参照を引数にとる関数
+fn change_text(s: &mut String) {
+    s.push_str(", world");
 }

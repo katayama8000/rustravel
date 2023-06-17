@@ -16,6 +16,15 @@ fn main() {
     let mut s4: String = String::from("hello");
     change_text(&mut s4);
     println!("{}", s4);
+
+    let s5: &mut String = &mut s4;
+    let s6: &mut String = &mut s4;
+
+    let s7: &str = "helloooooo";
+    let s8: &str = &s7;
+    let s9: &str = &s7;
+    println!("{}", s7);
+    println!("{}", s8);
 }
 
 fn takes_ownership(some_string: String) {

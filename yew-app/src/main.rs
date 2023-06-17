@@ -1,9 +1,12 @@
+use components::header::Header;
 use yew::prelude::*;
+
+mod components;
 
 #[function_component(App)]
 fn app() -> Html {
     html! {
-        <h1>{ "Hello World from Yew" }</h1>
+        <Header />
     }
 }
 

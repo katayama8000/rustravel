@@ -1,57 +1,44 @@
+fn add_one_v1(x: i32) -> i32 {
+    x + 1
+}
+
 fn main() {
-    let s1: String = String::from("hello");
-    let s2: &str = "hello";
+    // クロージャー
+    let add_one_v2 = |x: i32| -> i32 { x + 1 };
+    println!("{}", add_one_v2(1));
+    println!("{}", add_one_v1(1));
 
-    let s3: String = s1.clone();
+    let x: i32 = 4;
+    let equal_to_x = |z| z == x;
+    let y: i32 = 4;
+    println!("{}", equal_to_x(y));
 
-    takes_ownership(s3);
-    let length1: usize = calculate_length(&s1);
-    println!("{}", length1);
-    println!("{}", s1);
+    // 文字列に!!!を追加するクロージャー
+    let add_exclamation = |s: String| -> String { format!("{}!!!", s) };
+    let s = String::from("hello");
+    println!("{}", add_exclamation(s));
 
-    let rets1: &String = return_string2(&s1);
-    println!("{}", rets1);
-    println!("{}", s1);
+    // イテレーター
+    let v1: Vec<i32> = vec![1, 2, 3];
+    let v1_iter: std::slice::Iter<'_, i32> = v1.iter();
+    for val in v1_iter {
+        println!("{}", val);
+    }
 
-    let mut s4: String = String::from("hello");
-    change_text(&mut s4);
-    println!("{}", s4);
+    let v: Vec<i32> = vec![1, 2, 3];
+    let doubled: Vec<i32> = v.iter().map(|x| x * 2).collect();
+    println!("{:?}", doubled);
 
-    let s5: &mut String = &mut s4;
-    let s6: &mut String = &mut s4;
-
-    let s7: &str = "helloooooo";
-    let s8: &str = &s7;
-    let s9: &str = &s7;
-    println!("{}", s7);
-    println!("{}", s8);
-}
-
-fn takes_ownership(some_string: String) {
-    println!("{}", some_string);
-}
-
-fn func() -> String {
-    let s: String = String::from("hello");
-    s
-}
-
-// pointerを引数に取る関数
-fn calculate_length(s: &String) -> usize {
-    s.len()
-}
-
-// 文字列を変更する関数
-fn return_string1(s: String) -> String {
-    s
-}
-
-// pointerを引数にとってそれをそのまま返す
-fn return_string2(s: &String) -> &String {
-    s
-}
-
-// 可変参照を引数にとる関数
-fn change_text(s: &mut String) {
-    s.push_str(", world");
+    let add_world_to_vec = |v: &mut Vec<String>| {
+        v.push(String::from("world"));
+    };
+    let mut vec: Vec<String> = vec![String::from("hello")];
+    add_world_to_vec(&mut vec);
+    println!("{:?}", vec);
+    let add_world_to_string = |s: &mut String| {
+        s.push_str("world");
+    };
+    let mut s: String = String::from("hello");
+    add_world_to_string(&mut s);
+    println!("{}", s);
 }

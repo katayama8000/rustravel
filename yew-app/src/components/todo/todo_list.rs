@@ -1,17 +1,19 @@
 use crate::components::todo::todo_item::TodoItem;
 use crate::components::todo::types::Todo;
-use yew::{function_component, html, Html};
+use yew::{function_component, html, Html, Properties};
+
+#[derive(Properties, PartialEq)]
+pub struct TodoItemProps {
+    pub todo_items: Vec<Todo>,
+}
 
 #[function_component(TodoList)]
-pub fn todo_list() -> Html {
-    let todo = Todo {
-        id: 1,
-        title: "Learn Rust".to_string(),
-        completed: false,
-    };
+pub fn todo_list(props: &TodoItemProps) -> Html {
     html! {
       <ul class="list-group">
-        <TodoItem title={todo.title} completed={todo.completed} />
+        {props.todo_items.iter().map(|todo| html! {
+          <TodoItem title={todo.title.clone()} completed={todo.completed} />
+        }).collect::<Html>()}
       </ul>
     }
 }

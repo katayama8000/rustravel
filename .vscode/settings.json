@@ -1,0 +1,5 @@
+{
+    "rust-analyzer.linkedProjects": [
+        "./todo-actix-sqlite/Cargo.toml"
+    ]
+}

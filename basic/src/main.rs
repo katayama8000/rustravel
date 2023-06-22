@@ -1,75 +1,70 @@
-use std::fs::File;
-mod commands;
-mod lib01;
-use lib01::add::add_numbers;
+pub struct NewsArticle {
+    pub headline: String,
+    pub location: String,
+    pub author: String,
+    pub content: String,
+}
 
-// trait
-trait Tweet {
-    fn tweet(&self);
-    fn tweet_twice(&self) {
-        self.tweet();
-        self.tweet();
-    }
-    fn shout(&self) {
-        println!("Uooooooooooooooo");
+impl Summary for NewsArticle {
+    fn summarize_author(&self) -> String {
+        format!("@{}", self.author)
     }
 }
 
-struct Dove;
-struct Duck;
-
-fn make_tuple<T, S>(t: T, s: S) -> (T, S) {
-    (t, s)
+pub struct Tweet {
+    pub username: String,
+    pub content: String,
+    pub reply: bool,
+    pub retweet: bool,
 }
 
-impl Tweet for Dove {
-    fn tweet(&self) {
-        println!("Coo!");
+impl Summary for Tweet {
+    fn summarize_author(&self) -> String {
+        format!("@{}", self.username)
     }
 }
 
-impl Tweet for Duck {
-    fn tweet(&self) {
-        println!("Quack!");
+pub trait Summary {
+    fn summarize_author(&self) -> String;
+    fn summarize(&self) -> String {
+        // "（{}さんの文章をもっと読む）"
+        format!("(Read more from {}...)", self.summarize_author())
     }
 }
 
 fn main() {
-    let dove = Dove {};
-    dove.tweet();
-    dove.tweet_twice();
-    dove.shout();
-
-    let duck = Duck {};
-    duck.tweet();
-    duck.tweet_twice();
-    duck.shout();
-
-    let tuple1: (i32, i32) = make_tuple(1, 2);
-    let tuple2: (&str, &str) = make_tuple("Hello", "World");
-    let tuple3: (f32, f32) = make_tuple(1.0, 2.0);
-    println!("tuple1: {:?}", tuple1);
-    println!("tuple2: {:?}", tuple2);
-    println!("tuple3: {:?}", tuple3);
-
-    let f = File::open("hello.txt").unwrap();
-    let f = File::open("hello.txt").expect("Failed to open hello.txt");
-    let f = File::open("hello.txt");
-    let f = match f {
-        Ok(file) => {
-            println!("file: {:?}", file);
-        }
-        Err(error) => {
-            // ファイルを開く際に問題がありました
-            panic!("There was a problem opening the file: {:?}", error)
-        }
+    let tweet = Tweet {
+        username: String::from("horse_ebooks"),
+        content: String::from(
+            // もちろん、ご存知かもしれませんがね、みなさん
+            "of course, as you probably already know, people",
+        ),
+        reply: false,
+        retweet: false,
     };
 
-    commands::command_a();
-    let num = lib01::add::add_numbers(1, 2);
-    println!("num: {}", num);
-    let num = add_numbers(1, 5);
-    println!("num: {}", num);
-    let num = lib01::sub::sub_numbers(1, 2);
-    println!("num: {}", num);
+    println!("1 new tweet: {}", tweet.summarize());
+
+    let article = NewsArticle {
+        // ペンギンチームがスタンレーカップチャンピオンシップを勝ち取る！
+        headline: String::from("Penguins win the Stanley Cup Championship!"),
+        // アメリカ、ペンシルベニア州、ピッツバーグ
+        location: String::from("Pittsburgh, PA, USA"),
+        // アイスバーグ
+        author: String::from("Iceburgh"),
+        // ピッツバーグ・ペンギンが再度NHL(National Hockey League)で最強のホッケーチームになった
+        content: String::from(
+            "The Pittsburgh Penguins once again are the best \
+             hockey team in the NHL.",
+        ),
+    };
+
+    println!("New article available! {}", article.summarize());
+
+    notify(&tweet);
+}
+
+pub fn notify<T: Summary>(item: &T) {
+    // 速報！ {}
+    println!("Breaking news! {}", item.summarize());
 }

@@ -1,70 +1,60 @@
-pub struct NewsArticle {
-    pub headline: String,
-    pub location: String,
-    pub author: String,
-    pub content: String,
+struct Point<T> {
+    x: T,
+    y: T,
 }
 
-impl Summary for NewsArticle {
-    fn summarize_author(&self) -> String {
-        format!("@{}", self.author)
+impl<T> Point<T> {
+    fn xy(self) -> (T, T) {
+        (self.x, self.y)
     }
 }
 
-pub struct Tweet {
-    pub username: String,
-    pub content: String,
-    pub reply: bool,
-    pub retweet: bool,
+enum Coin {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter,
 }
 
-impl Summary for Tweet {
-    fn summarize_author(&self) -> String {
-        format!("@{}", self.username)
+fn value_in_cents(coin: Coin) -> u8 {
+    match coin {
+        Coin::Penny => 1,
+        Coin::Nickel => 5,
+        Coin::Dime => 10,
+        Coin::Quarter => 25,
     }
 }
 
-pub trait Summary {
-    fn summarize_author(&self) -> String;
-    fn summarize(&self) -> String {
-        // "（{}さんの文章をもっと読む）"
-        format!("(Read more from {}...)", self.summarize_author())
+fn plus_one(x: Option<i32>) -> Option<i32> {
+    match x {
+        None => None,
+        Some(i) => Some(i + 1),
     }
 }
 
 fn main() {
-    let tweet = Tweet {
-        username: String::from("horse_ebooks"),
-        content: String::from(
-            // もちろん、ご存知かもしれませんがね、みなさん
-            "of course, as you probably already know, people",
-        ),
-        reply: false,
-        retweet: false,
-    };
+    let a = 1;
+    let b = 2;
+    let c = add(a, b);
+    println!("{} + {} = {}", a, b, c);
 
-    println!("1 new tweet: {}", tweet.summarize());
+    let point = Point::<i32> { x: 1, y: 2 };
+    println!("point: {:?}", point.xy());
 
-    let article = NewsArticle {
-        // ペンギンチームがスタンレーカップチャンピオンシップを勝ち取る！
-        headline: String::from("Penguins win the Stanley Cup Championship!"),
-        // アメリカ、ペンシルベニア州、ピッツバーグ
-        location: String::from("Pittsburgh, PA, USA"),
-        // アイスバーグ
-        author: String::from("Iceburgh"),
-        // ピッツバーグ・ペンギンが再度NHL(National Hockey League)で最強のホッケーチームになった
-        content: String::from(
-            "The Pittsburgh Penguins once again are the best \
-             hockey team in the NHL.",
-        ),
-    };
+    let point = Point::<f64> { x: 3.1, y: 5.0 };
+    println!("point: {:?}", point.xy());
 
-    println!("New article available! {}", article.summarize());
+    let coin = Coin::Penny;
+    println!("coin: {}", value_in_cents(coin));
 
-    notify(&tweet);
+    let five = Some(5);
+    let six = plus_one(five);
+    let none = plus_one(None);
+    println!("five: {:?}", five);
+    println!("six: {:?}", six);
+    println!("none: {:?}", none);
 }
 
-pub fn notify<T: Summary>(item: &T) {
-    // 速報！ {}
-    println!("Breaking news! {}", item.summarize());
+fn add<T: std::ops::Add<Output = T>>(a: T, b: T) -> T {
+    a + b
 }

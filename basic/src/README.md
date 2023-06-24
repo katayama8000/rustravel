@@ -1,2 +1,3 @@
 - https://doc.rust-jp.rs/book-ja/
+- https://zenn.dev/mebiusbox/books/22d4c1ed9b0003
 - https://www.youtube.com/watch?v=tw2WCjBTgRM&t=1688s

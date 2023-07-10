@@ -1,60 +1,83 @@
-struct Point<T> {
-    x: T,
-    y: T,
+// trait
+
+trait Human {
+    fn name(&self) -> String;
+    fn age(&self) -> u32;
+    fn sex(&self) -> String;
 }
 
-impl<T> Point<T> {
-    fn xy(self) -> (T, T) {
-        (self.x, self.y)
+struct Person {
+    name: String,
+    age: u32,
+    sex: String,
+}
+
+impl Human for Person {
+    fn name(&self) -> String {
+        self.name.clone()
+    }
+    fn age(&self) -> u32 {
+        self.age
+    }
+    fn sex(&self) -> String {
+        self.sex.clone()
     }
 }
 
-enum Coin {
-    Penny,
-    Nickel,
-    Dime,
-    Quarter,
+trait Animal {
+    fn bow(&self) -> String;
+    fn bowbow(&self) -> String;
 }
 
-fn value_in_cents(coin: Coin) -> u8 {
-    match coin {
-        Coin::Penny => 1,
-        Coin::Nickel => 5,
-        Coin::Dime => 10,
-        Coin::Quarter => 25,
+
+struct Monkey {
+    name: String,
+    age : u32,
+}
+
+impl Animal for Monkey {
+    fn bow(&self) -> String {
+        self.name.clone()
+    }
+
+    fn bowbow(&self) -> String {
+        self.age.to_string()
     }
 }
 
-fn plus_one(x: Option<i32>) -> Option<i32> {
-    match x {
-        None => None,
-        Some(i) => Some(i + 1),
-    }
+
+
+trait Geometry {
+    fn area(&self) -> f64;
+    fn name(&self) -> &str{ return "Geometry"}
 }
+
+struct Rectangle { width: u32, height: u32 }
+
+impl Geometry for Rectangle {
+    fn area(&self) -> f64 {
+        self.width as f64 * self.height as f64
+    }
+    fn name(&self) -> &str { return "Rectangle" }
+}
+
+
 
 fn main() {
-    let a = 1;
-    let b = 2;
-    let c = add(a, b);
-    println!("{} + {} = {}", a, b, c);
+    let r = Rectangle { width: 10, height: 20 };
+    println!("{} area: {}", r.name(), r.area());
 
-    let point = Point::<i32> { x: 1, y: 2 };
-    println!("point: {:?}", point.xy());
+    let p = Person {
+        name: "John".to_string(),
+        age: 20,
+        sex: "male".to_string(),
+    };
+    println!("name: {}, age: {}", p.name(), p.age());
 
-    let point = Point::<f64> { x: 3.1, y: 5.0 };
-    println!("point: {:?}", point.xy());
+    let m = Monkey {
+        name: "Monkey".to_string(),
+        age: 10,
+    };
 
-    let coin = Coin::Penny;
-    println!("coin: {}", value_in_cents(coin));
-
-    let five = Some(5);
-    let six = plus_one(five);
-    let none = plus_one(None);
-    println!("five: {:?}", five);
-    println!("six: {:?}", six);
-    println!("none: {:?}", none);
-}
-
-fn add<T: std::ops::Add<Output = T>>(a: T, b: T) -> T {
-    a + b
+    println!("{} age {}", m.bow(), m.bowbow());
 }

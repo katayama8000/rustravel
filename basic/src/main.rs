@@ -29,10 +29,9 @@ trait Animal {
     fn bowbow(&self) -> String;
 }
 
-
 struct Monkey {
     name: String,
-    age : u32,
+    age: u32,
 }
 
 impl Animal for Monkey {
@@ -45,26 +44,32 @@ impl Animal for Monkey {
     }
 }
 
-
-
 trait Geometry {
     fn area(&self) -> f64;
-    fn name(&self) -> &str{ return "Geometry"}
+    fn name(&self) -> &str {
+        return "Geometry";
+    }
 }
 
-struct Rectangle { width: u32, height: u32 }
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
 
 impl Geometry for Rectangle {
     fn area(&self) -> f64 {
         self.width as f64 * self.height as f64
     }
-    fn name(&self) -> &str { return "Rectangle" }
+    fn name(&self) -> &str {
+        return "Rectangle";
+    }
 }
 
-
-
 fn main() {
-    let r = Rectangle { width: 10, height: 20 };
+    let r = Rectangle {
+        width: 10,
+        height: 20,
+    };
     println!("{} area: {}", r.name(), r.area());
 
     let p = Person {

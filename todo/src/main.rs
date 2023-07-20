@@ -43,10 +43,10 @@ impl TodoList {
 }
 
 fn parse_command(input: &str) -> Option<Command> {
-    let mut parts = input.trim().splitn(3, ' ');
-    let command = parts.next()?;
-    let name = parts.next().unwrap_or("");
-    let new_name = parts.next().unwrap_or("");
+    let mut parts: std::str::SplitN<'_, char> = input.trim().splitn(3, ' ');
+    let command: &str = parts.next()?;
+    let name: &str = parts.next().unwrap_or("");
+    let new_name: &str = parts.next().unwrap_or("");
 
     match command {
         "add" => Some(Command::Add(name.to_string())),

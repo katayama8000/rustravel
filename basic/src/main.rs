@@ -1,10 +1,9 @@
-mod lib01;
-use lib01::add::add_numbers;
-use rand::Rng;
 mod calc;
+mod lib01;
 mod lib02;
-use lib02::multiply::divide_numbers;
-use lib02::multiply::multi_numbers;
+use lib01::add::add_numbers;
+use lib02::multiply::{divide_numbers, multiply_numbers};
+use rand::Rng;
 
 fn main() {
     println!("1 + 2 = {}", add_numbers(1, 2));
@@ -15,7 +14,7 @@ fn main() {
     println!("{} + {} = {}", n1, n2, calc::add(n1, n2));
     let num1: i32 = rng.gen();
     let num2: i32 = rng.gen();
-    println!("{} * {} = {}", 3, 2, multi_numbers(3, 2));
+    println!("{} * {} = {}", 3, 2, multiply_numbers(3, 2));
     println!("{} * {} = {}", 6, 2, divide_numbers(6, 2));
 }
 

@@ -1,4 +1,4 @@
-pub fn multi_numbers(a: i32, b: i32) -> i32 {
+pub fn multiply_numbers(a: i32, b: i32) -> i32 {
     a * b
 }
 

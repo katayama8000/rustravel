@@ -25,7 +25,8 @@ async fn main() -> Result<()> {
         .text()
         .await?;
 
-    println!("body = {:?}", body);
+    // println!("body = {:?}", body);
+    post_json_data(10).await?;
     Ok(())
 }
 
@@ -34,6 +35,17 @@ async fn get_json_data(index: i32) -> Result<()> {
     println!("{}", index);
     let json_url = format!("https://jsonplaceholder.typicode.com/posts/{}", index);
     let json_response: reqwest::Response = client.get(json_url).send().await?;
+    println!("{:#?}", json_response);
+
+    let json_body: String = json_response.text().await?;
+    println!("{}", json_body);
+    Ok(())
+}
+
+async fn post_json_data(index: i32) -> Result<()> {
+    let client = Client::new(); // 1
+    let json_url = "https://jsonplaceholder.typicode.com/posts";
+    let json_response: reqwest::Response = client.post(json_url).send().await?;
     let json_body: String = json_response.text().await?;
     println!("{}", json_body);
     Ok(())

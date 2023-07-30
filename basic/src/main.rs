@@ -1,26 +1,33 @@
-mod calc;
-mod lib01;
-mod lib02;
-use lib01::add::add_numbers;
-use lib02::multiply::{divide_numbers, multiply_numbers};
-use rand::Rng;
+use reqwest::Client;
 
-fn main() {
-    println!("1 + 2 = {}", add_numbers(1, 2));
-    let mut rng = rand::thread_rng();
-    let n1: i32 = rng.gen();
-    let n2: i32 = rng.gen();
-    println!("{} + {} = {}", n1, n2, add_numbers(n1, n2));
-    println!("{} + {} = {}", n1, n2, calc::add(n1, n2));
-    let num1: i32 = rng.gen();
-    let num2: i32 = rng.gen();
-    println!("{} * {} = {}", 3, 2, multiply_numbers(3, 2));
-    println!("{} * {} = {}", 6, 2, divide_numbers(6, 2));
+type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
+
+#[tokio::main]
+async fn main() -> Result<()> {
+    let client = Client::new(); // 1
+    let url = "https://zipcloud.ibsnet.co.jp/api/search";
+    let response = client
+        .get(url)
+        .query(&[("zipcode", "1000002")])
+        .send()
+        .await?; // 2
+    let body = response.text().await?; // 3
+                                       // println!("{}", body);
+
+    let json_url = "https://jsonplaceholder.typicode.com/posts";
+    let json_response: reqwest::Response = client.get(json_url).send().await?;
+    let json_body: String = json_response.text().await?;
+    // println!("{}", json_body);
+    get_json_data(10).await?;
+    Ok(())
 }
 
-// calc モジュールを定義する
-// mod calc {
-//     pub fn add(a: i32, b: i32) -> i32 {
-//         a + b
-//     }
-// }
+async fn get_json_data(index: i32) -> Result<()> {
+    let client = Client::new(); // 1
+    println!("{}", index);
+    let json_url = format!("https://jsonplaceholder.typicode.com/posts/{}", index);
+    let json_response: reqwest::Response = client.get(json_url).send().await?;
+    let json_body: String = json_response.text().await?;
+    println!("{}", json_body);
+    Ok(())
+}

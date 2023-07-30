@@ -19,6 +19,13 @@ async fn main() -> Result<()> {
     let json_body: String = json_response.text().await?;
     // println!("{}", json_body);
     get_json_data(10).await?;
+
+    let body = reqwest::get("https://www.rust-lang.org")
+        .await?
+        .text()
+        .await?;
+
+    println!("body = {:?}", body);
     Ok(())
 }
 

@@ -48,4 +48,33 @@ fn main() {
         age: 10,
     };
     println!("{}{}", human.age, human.name);
+
+    let a = [1, 2, 3];
+    assert_eq!(a.iter().count(), 3);
+
+    let a = [1, 2, 3, 4, 5];
+    assert_eq!(a.iter().count(), 5);
+
+    let a = [1, 2, 3];
+    assert_eq!(a.iter().last(), Some(&3));
+
+    let a = [1, 2, 3, 4, 5];
+    assert_eq!(a.iter().last(), Some(&5));
+
+    let a1 = [1, 2, 3];
+    let a2 = [4, 5, 6];
+
+    let mut iter = a1.iter().zip(a2.iter());
+
+    assert_eq!(iter.next(), Some((&1, &4)));
+    assert_eq!(iter.next(), Some((&2, &5)));
+    assert_eq!(iter.next(), Some((&3, &6)));
+    assert_eq!(iter.next(), None);
+
+    let vec1 = vec![1, 2, 3];
+    let vec2 = vec![4, 5, 6];
+
+    for (v1, v2) in vec1.iter().zip(vec2.iter()) {
+        println!("v1: {}, v2: {}", v1, v2);
+    }
 }

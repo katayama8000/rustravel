@@ -1,80 +1,70 @@
-struct Counter {
-    count: u32,
+fn next_birthday1(current_age: Option<u8>) -> Option<String> {
+    // If `current_age` is `None`, this returns `None`.
+    // If `current_age` is `Some`, the inner `u8` gets assigned to `next_age`
+    // `current_age`が`None`の場合、`None`を返す。
+    // `current_age`が`Some`の場合、内部の`u8`型の値が`next_age`に代入される。
+    let next_age: u8 = current_age? + 1;
+    println!("next age is {}", next_age);
+    Some(format!("Next year I will be {}", next_age))
 }
 
-impl Counter {
-    fn new() -> Counter {
-        Counter { count: 0 }
+fn next_birthday2(current_age: Option<u8>) -> Option<String> {
+    let next_age: u8 = match current_age {
+        Some(age) => age + 1,
+        None => return None,
+    };
+    println!("next age is {}", next_age);
+    Some(format!("Next year I will be {}", next_age))
+}
+
+struct Person {
+    job: Option<Job>,
+}
+
+#[derive(Clone, Copy)]
+struct Job {
+    phone_number: Option<PhoneNumber>,
+}
+
+#[derive(Clone, Copy)]
+struct PhoneNumber {
+    area_code: Option<u8>,
+    number: Option<u32>,
+}
+
+impl Person {
+    // Gets the area code of the phone number of the person's job, if it exists.
+    // その人の市外局番が存在する場合、取得する。
+    fn work_phone_area_code(&self) -> Option<u8> {
+        // This would need many nested `match` statements without the `?` operator.
+        // It would take a lot more code - try writing it yourself and see which
+        // is easier.
+        // `?`がなければ、多くのネストされた`match`文を必要とするため、より長いコードとなる。
+        // 実際に書いて、どちらの方が簡単か確かめてみましょう。
+        self.job?.phone_number?.area_code
     }
-}
 
-impl Iterator for Counter {
-    type Item = u32;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        self.count += 1;
-
-        if self.count < 6 {
-            Some(self.count)
-        } else {
-            None
-        }
+    fn work_phone_number(&self) -> Option<u32> {
+        self.job?.phone_number?.number
     }
-}
-
-struct Human {
-    name: String,
-    age: u32,
 }
 
 fn main() {
-    let mut counter: Counter = Counter::new();
-    assert_eq!(counter.next(), Some(1));
-    assert_eq!(counter.next(), Some(2));
-    assert_eq!(counter.next(), Some(3));
-    assert_eq!(counter.next(), Some(4));
-    assert_eq!(counter.next(), Some(5));
-    assert_eq!(counter.next(), None);
+    let current_age: Option<u8> = Some(10);
+    next_birthday1(current_age);
 
-    let sum: u32 = Counter::new()
-        .zip(Counter::new().skip(1))
-        .map(|(a, b)| a * b)
-        .filter(|x| x % 3 == 0)
-        .sum();
-    assert_eq!(18, sum);
+    let current_age: Option<u8> = Some(12);
+    next_birthday2(current_age);
 
-    let human = Human {
-        name: "honoka".to_string(),
-        age: 10,
+    let p = Person {
+        job: Some(Job {
+            phone_number: Some(PhoneNumber {
+                area_code: Some(61),
+                number: Some(429222222),
+            }),
+        }),
     };
-    println!("{}{}", human.age, human.name);
 
-    let a = [1, 2, 3];
-    assert_eq!(a.iter().count(), 3);
-
-    let a = [1, 2, 3, 4, 5];
-    assert_eq!(a.iter().count(), 5);
-
-    let a = [1, 2, 3];
-    assert_eq!(a.iter().last(), Some(&3));
-
-    let a = [1, 2, 3, 4, 5];
-    assert_eq!(a.iter().last(), Some(&5));
-
-    let a1 = [1, 2, 3];
-    let a2 = [4, 5, 6];
-
-    let mut iter = a1.iter().zip(a2.iter());
-
-    assert_eq!(iter.next(), Some((&1, &4)));
-    assert_eq!(iter.next(), Some((&2, &5)));
-    assert_eq!(iter.next(), Some((&3, &6)));
-    assert_eq!(iter.next(), None);
-
-    let vec1 = vec![1, 2, 3];
-    let vec2 = vec![4, 5, 6];
-
-    for (v1, v2) in vec1.iter().zip(vec2.iter()) {
-        println!("v1: {}, v2: {}", v1, v2);
-    }
+    assert_eq!(p.work_phone_area_code(), Some(61));
+    assert_eq!(p.work_phone_number(), Some(429222222))
 }

@@ -1,37 +1,34 @@
-use std::collections::HashMap;
-
 fn main() {
-    let mut store: HashMap<String, u32> = HashMap::new();
-    store.insert("Java".to_string(), 1);
-    store.insert("Rust".to_string(), 2);
-    store.insert("TypeScript".to_string(), 3);
-    store.insert("C".to_string(), 4);
-    println!("{:#?}", store);
-    let lung: Option<&u32> = store.get("Java");
-    println!("{:#?}", lung);
-    store.insert("Java".to_string(), 5);
-    println!("{:#?}", store);
-    let ret = store.get_key_value(&"Java".to_string());
-    println!("{:#?}", ret);
-    store.remove("Java");
-    println!("{:#?}", store);
-    for key in store.keys() {
-        println!("{key}");
-    }
-    for (key, val) in store.iter() {
-        println!("key: {key} val: {val}");
-    }
+    // 参照はずし
+    let mut str = "hello";
+    println!("{}", str);
+    str = "world";
+    println!("{}", str);
 
-    let mut scores = HashMap::new();
-    scores.insert("Alice", 10);
-    let team_name = "Bob";
-    let new_score = 20;
+    let mut num = 0;
+    let ref_num = &mut num;
+    *ref_num = 20;
 
-    // エントリーが存在しない場合は新しいエントリーを作成
-    let team_score = scores.entry(team_name).or_insert(0);
-    // 新しい値を設定
-    *team_score += new_score;
-    let team_score2 = scores.entry("Alice").or_insert(100);
-    *team_score2 += new_score;
-    println!("{:#?}", scores);
+    let str = String::from("abc");
+    let str_ref = &String::from("def");
+    if str == *str_ref {
+        println!("equal");
+    } else {
+        println!("not equal");
+    }
+    let mut str_ref1: &mut String = &mut String::from("def");
+    str_ref1.push('z');
+
+    let mut num: i32 = 30;
+    let ref_num: &mut i32 = &mut num;
+    *ref_num = 20;
+
+    let mut c: char = 'c';
+    let ref_c = &mut c;
+    *ref_c = 'z';
+
+    let mut strr: String = String::from("aaa");
+    let ref_strr: &mut String = &mut strr;
+    *ref_strr = String::from("bbbbb");
+    println!("{}", strr);
 }

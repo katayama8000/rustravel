@@ -1,39 +1,32 @@
-use std::cmp::Reverse;
 
-// カスタム構造体を定義
-#[derive(Debug)]
-struct Person {
-    name: String,
-    age: u32,
-}
+#[allow(unused_imports)]
+use itertools::Itertools;
+#[allow(unused_imports)]
+use num::*;
+use proconio::input;
+#[allow(unused_imports)]
+use proconio::marker::*;
+#[allow(unused_imports)]
+use std::collections::*;
 
 fn main() {
-    // サンプルデータを作成
-    let mut people: Vec<Person> = vec![
-        Person {
-            name: String::from("Alice"),
-            age: 25,
-        },
-        Person {
-            name: String::from("Bob"),
-            age: 30,
-        },
-        Person {
-            name: String::from("Charlie"),
-            age: 20,
-        },
-    ];
-
-    // 年齢を基準にソート
-    people.sort_by_key(|person| person.age);
-
-    // ソートされた結果を表示
-    for person in &people {
-        println!("{:?}", person);
+    input! {
+        s: String,
     }
 
-    people.sort_by_key(|person| Reverse(person.age));
-    for person in &people {
-        println!("{:?} - {:?}", person.age, person.name);
+    let mut ret = String::new();
+
+    for c in s.chars().rev() {
+        let rev = match c {
+            '0' => '0',
+            '1' => '1',
+            '6' => '9',
+            '8' => '8',
+            '9' => '6',
+            _ => unreachable!(),
+        };
+
+        ret.push(rev)
     }
+    println!("{}", ret);
 }

@@ -10,15 +10,12 @@ use std::collections::*;
 
 fn main() {
     input! {
-        money:u32
+        n:f32
     };
 
-    let mut sum = 0;
-    let mut day = 0;
-    while sum < money {
-        day += 1;
-        sum += day;
+    match n {
+        n if n * 1.08 > 206.0 => println!(":("),
+        n if n * 1.08 < 206.0 => println!("Yay!"),
+        _ => println!("so-so"),
     }
-
-    println!("{}", day);
 }

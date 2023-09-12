@@ -10,15 +10,9 @@ use std::collections::*;
 
 fn main() {
     input! {
-        money:u32
+        a:f32,
+        b:f32
     };
 
-    let mut sum = 0;
-    let mut day = 0;
-    while sum < money {
-        day += 1;
-        sum += day;
-    }
-
-    println!("{}", day);
+    println!("{}", (a / 100.0) * b);
 }

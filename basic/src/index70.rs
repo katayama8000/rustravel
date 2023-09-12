@@ -10,15 +10,13 @@ use std::collections::*;
 
 fn main() {
     input! {
-        money:u32
-    };
-
-    let mut sum = 0;
-    let mut day = 0;
-    while sum < money {
-        day += 1;
-        sum += day;
+        x: i32,
+        y: i32,
     }
 
-    println!("{}", day);
+    if x != y {
+        println!("{}", 3 - (x + y));
+    } else {
+        println!("{}", x);
+    }
 }

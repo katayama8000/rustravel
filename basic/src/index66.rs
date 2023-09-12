@@ -10,15 +10,18 @@ use std::collections::*;
 
 fn main() {
     input! {
-        money:u32
-    };
-
-    let mut sum = 0;
-    let mut day = 0;
-    while sum < money {
-        day += 1;
-        sum += day;
+        n: usize,
+        k: usize,
     }
 
-    println!("{}", day);
+    let mut total = 0;
+
+    for i in 1..=n {
+        for j in 1..=k {
+            let room_number = i * 100 + j;
+            total += room_number;
+        }
+    }
+
+    println!("{}", total);
 }

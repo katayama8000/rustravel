@@ -72,4 +72,6 @@ fn main() {
     println!("num: {}", num);
     let num = lib01::sub::sub_numbers(1, 2);
     println!("num: {}", num);
+    let num = lib01::add::add_numbers(1, 2);
+    println!("num: {}", num);
 }

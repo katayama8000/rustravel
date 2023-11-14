@@ -59,6 +59,13 @@ fn main() {
     let quarter: u32 = value_in_cents(Coin::Quarter(UsState::Alaska));
     println!("{}", quarter);
     let five: Option<i32> = Some(5);
+    // someから値を取り出す
+    let some_value: i32 = five.unwrap();
+    // matchで値を取り出す
+    let some_value: i32 = match five {
+        Some(i) => i,
+        None => 0,
+    };
     let six: Option<i32> = plus_one(five);
     let none: Option<i32> = plus_one(None);
     println!("{:?}, {:?}, {:?}", five, six, none);
